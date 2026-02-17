@@ -138,15 +138,50 @@ public class SLinkedList<T> implements Iterable<T>{
     public void reverse(){
         
     //TODO
+
+        Node<T> prev = null;
+        Node<T> current = head;
+        tail = head; 
+        while (current != null) {
+            Node<T> next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        head = prev;
     }
     public void deleteConsecutiveDuplicates(){
        //TODO
+        Node<T> current = head;
+        while (current != null && current.next != null) {
+            if (current.data.equals(current.next.data)) {
+                current.next = current.next.next;
+                size--;
+                if (current.next == null) {
+                    tail = current; // update tail if last node was removed
+                }
+            } else {
+                current = current.next;
+            }
     }
     //two lists are equal if they have the same 
     // size and the same elements in the same order
     @Override
     public boolean equals(Object obj){
         //TODO
+        if (obj == null || !(obj instanceof SLinkedList)) return false;
+
+        SLinkedList<?> other = (SLinkedList<?>) obj;
+        if (this.size != other.size) return false;
+
+        Node<T> thisCurrent = this.head;
+        Node<?> otherCurrent = other.head;
+        while (thisCurrent != null) {
+            if (!thisCurrent.data.equals(otherCurrent.data)) return false;
+            thisCurrent = thisCurrent.next;
+            otherCurrent = otherCurrent.next;
+        }
+        return true;
     }
 
 }
